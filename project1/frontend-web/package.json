@@ -1,0 +1,8 @@
+{
+  "name": "web-portal",
+  "version": "3.0.0",
+  "description": "Acme customer web portal",
+  "type": "module",
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

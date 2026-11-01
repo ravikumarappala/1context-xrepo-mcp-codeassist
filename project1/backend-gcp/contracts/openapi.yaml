@@ -1,0 +1,25 @@
+openapi: 3.1.0
+info: { title: orders-api, version: 1.4.0 }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer }
+  schemas:
+    Order:
+      type: object
+      required: [order_id, status, total, items]
+      properties:
+        order_id: { type: string }
+        status: { type: string, enum: [processing, shipped, delivered, cancelled] }
+        total: { type: number }
+        items:
+          type: array
+          items: { type: object, properties: { sku: { type: string }, quantity: { type: integer } } }
+security: [{ bearer: [] }]
+paths:
+  /orders/{id}:
+    get:
+      summary: An order belonging to the signed-in user
+      responses:
+        "200": { description: The order, content: { application/json: { schema: { $ref: "#/components/schemas/Order" } } } }
+        "401": { description: sign in required }
+        "404": { description: not found (or not yours) }

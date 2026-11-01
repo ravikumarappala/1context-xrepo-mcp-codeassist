@@ -1,0 +1,12 @@
+# Illustrative AWS SAM template (not deployed by this sample).
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  InventoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.12
+      Handler: handler.handler
+      CodeUri: src/
+      Events:
+        Stock: { Type: Api, Properties: { Path: /stock/{sku}, Method: any } }

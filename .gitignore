@@ -1,0 +1,8 @@
+node_modules/
+__pycache__/
+.build/
+.swiftpm/
+# Written by setup-tools; holds absolute local paths
+**/.agents/mcp_config.json
+# Output of the limited-access demo
+exports/

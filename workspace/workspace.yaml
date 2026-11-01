@@ -1,0 +1,58 @@
+# Shared workspace for the fictional "Acme Retail" project1.
+# Each folder below stands in for a separate Git repo; in real life, point the paths at your clones.
+name: acme
+
+repos:
+  frontend-web:
+    path: ../project1/frontend-web
+    role: Customer web portal (JavaScript); shows order summaries from orders-api
+    stack: [node, javascript]
+    checks:
+      test: [node, --test]
+  ios-app:
+    path: ../project1/ios
+    role: iOS app package (Swift); shows order summaries from orders-api
+    stack: [ios, swift]
+    checks:
+      test: [swift, test]
+  orders-api:
+    path: ../project1/backend-gcp
+    role: Orders REST API (Node) on GCP Cloud Run; source of the Order contract
+    stack: [node, gcp]
+    checks:
+      test: [node, --test]
+  inventory-service:
+    path: ../project1/backend-aws
+    role: Stock and reservations (Python) on AWS Lambda; used by orders-api
+    stack: [python, aws]
+    checks:
+      test: [python3, -m, unittest, discover, -s, tests]
+  auth-lib:
+    path: ../reusable/auth-lib
+    role: REUSABLE - shared sign-in token helpers (@acme/auth-lib)
+    stack: [node]
+    checks:
+      test: [node, --test]
+
+knowledge:
+  agents: AGENTS.md
+  catalog: knowledge/catalog.yaml
+  experts: knowledge/experts
+  decisions: knowledge/decisions
+  learnings: knowledge/learnings
+  plans: plans
+  contracts: knowledge/contracts
+
+default_profile: owner
+profiles:
+  owner:
+    repos: "*"
+  contractor-web:                          # a front-end contractor
+    repos: [frontend-web]                  # code: cloned and searchable
+    contracts: [orders-api, auth-lib]      # interface only: catalog entry + published contract
+    write_knowledge: false                 # inventory-service and ios-app: not listed at all
+
+limits:
+  max_results: 40
+  max_file_bytes: 60000
+  check_timeout_sec: 600

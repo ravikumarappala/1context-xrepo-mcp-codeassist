@@ -1,0 +1,34 @@
+# One entry per service or reusable module. Assistants check this before writing new code.
+services:
+  - name: orders-api
+    description: Orders REST API - get an order for the signed-in user
+    repo: orders-api
+    stack: [node]
+    cloud: gcp
+    reusable: false
+    capabilities: [orders, order status, order history]
+    contract: { repo: orders-api, path: contracts/openapi.yaml }
+    consumers:
+      - { repo: frontend-web, via: orderSummary }
+      - { repo: ios-app, via: OrderSummaryViewModel }
+
+  - name: inventory-service
+    description: Stock levels and reservations
+    repo: inventory-service
+    stack: [python]
+    cloud: aws
+    reusable: false
+    capabilities: [inventory, stock, reservations]
+    contract: { repo: inventory-service, path: contracts/openapi.yaml }
+    consumers:
+      - { repo: orders-api, via: reserveStock }
+
+  - name: auth-lib
+    description: Shared sign-in token helpers - sign, verify, read the bearer header
+    repo: auth-lib
+    stack: [node]
+    reusable: true
+    package: "npm @acme/auth-lib >= 2.0"
+    capabilities: [auth, sign in, tokens, bearer]
+    consumers:
+      - { repo: orders-api, via: userFromRequest }

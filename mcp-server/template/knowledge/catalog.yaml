@@ -1,0 +1,41 @@
+# One entry per service or reusable module. Assistants check this before writing new code.
+services:
+  - name: orders-api
+    description: Orders REST API - create, update, query orders
+    repo: orders-api
+    stack: [node]
+    reusable: false
+    capabilities: [orders, checkout, order history]
+    contract: { repo: orders-api, path: contracts/openapi.yaml }
+    consumers:
+      - { repo: web-portal, via: OrderSummary }
+
+  - name: inventory-service
+    description: Stock levels and reservations
+    repo: inventory-service
+    stack: [python]
+    reusable: false
+    capabilities: [inventory, stock, reservations]
+    consumers:
+      - { repo: web-portal, via: ProductAvailability }
+      - { repo: orders-api, via: reserveStock }
+
+  - name: auth-lambda
+    description: Sign-in and token verification, shared by every product
+    repo: auth-lambda
+    stack: [python]
+    reusable: true
+    capabilities: [auth, login, tokens, sign up]
+    consumers:
+      - { repo: web-portal, via: SignInPage }
+      - { repo: orders-api, via: requireUser middleware }
+
+  - name: upload-kit
+    description: File upload and preview component + client
+    repo: upload-kit
+    stack: [node, typescript]
+    reusable: true
+    package: "npm @acme/upload-kit >= 2.0"
+    capabilities: [upload, documents, images, preview, attachments]
+    consumers:
+      - { repo: web-portal, via: AttachmentPanel }

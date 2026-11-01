@@ -1,0 +1,10 @@
+{
+  "folders": [
+    { "path": "project1/frontend-web" },
+    { "path": "project1/ios" },
+    { "path": "project1/backend-gcp" },
+    { "path": "project1/backend-aws" },
+    { "path": "reusable/auth-lib" },
+    { "path": "workspace" }
+  ]
+}

@@ -1,0 +1,10 @@
+# Illustrative Cloud Run service (not deployed by this sample).
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata: { name: orders-api }
+spec:
+  template:
+    spec:
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT/acme/orders-api:latest
+          env: [{ name: AUTH_SECRET, valueFrom: { secretKeyRef: { name: auth-secret, key: latest } } }]

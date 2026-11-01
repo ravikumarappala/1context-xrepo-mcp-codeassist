@@ -1,0 +1,8 @@
+{
+  "name": "orders-api",
+  "version": "1.4.0",
+  "description": "Acme orders REST API (Cloud Run)",
+  "type": "module",
+  "scripts": { "start": "node src/server.js", "test": "node --test" },
+  "license": "MIT"
+}

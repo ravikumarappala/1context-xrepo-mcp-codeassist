@@ -1,0 +1,57 @@
+# Example workspace for the fictional "Acme Retail Platform".
+# Paths are relative to this file (absolute paths work too). Edit roles, checks and profiles.
+name: acme
+
+repos:
+  web-portal:
+    path: ../repos/web-portal
+    role: Customer web portal (TypeScript) - browse, cart, order history
+    stack: [node, typescript]
+    checks:
+      test: [npm, test]
+  orders-api:
+    path: ../repos/orders-api
+    role: Orders REST API (Node) - create, update and query orders
+    stack: [node]
+    checks:
+      test: [npm, test]
+  inventory-service:
+    path: ../repos/inventory-service
+    role: Inventory service (Python) - stock levels and reservations
+    stack: [python]
+    checks:
+      test: [python3, -m, pytest, -q]
+  auth-lambda:
+    path: ../repos/auth-lambda
+    role: REUSABLE - sign-in and token verification function, shared by all products
+    stack: [python]
+    checks: {}
+  upload-kit:
+    path: ../repos/upload-kit
+    role: REUSABLE - file upload and preview library used by the portal
+    stack: [node, typescript]
+    checks:
+      test: [npm, test]
+
+knowledge:
+  agents: AGENTS.md
+  catalog: knowledge/catalog.yaml
+  experts: knowledge/experts
+  decisions: knowledge/decisions
+  learnings: knowledge/learnings
+  plans: plans
+  contracts: knowledge/contracts             # published contracts for interface-only users
+
+default_profile: owner
+profiles:
+  owner:
+    repos: "*"
+  contractor-frontend:
+    repos: [web-portal]                        # code: cloned and searchable
+    contracts: [orders-api, auth-lambda, upload-kit]   # interface only: catalog entry + published contract
+    write_knowledge: false                     # inventory-service: not listed at all
+
+limits:
+  max_results: 40
+  max_file_bytes: 60000
+  check_timeout_sec: 600

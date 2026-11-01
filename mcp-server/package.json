@@ -1,0 +1,22 @@
+{
+  "name": "xrepo-mcp-server",
+  "version": "0.1.0",
+  "description": "Local MCP server that gives AI coding assistants shared context across dependent repos",
+  "type": "module",
+  "bin": {
+    "xrepo-mcp": "src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "yaml": "^2.6.0",
+    "zod": "^3.25.0"
+  },
+  "license": "MIT"
+}
